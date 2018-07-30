@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>get/post method</title>
+</head>
+<body>
+	<!-- get or post방식. method에 지정. -->
+	<!-- action에 servlet urlPatterns값 지정하면 해당 urlPattern을 지정한 servlet을 컨테이너가 실행함.  -->
+	<form method="post" action="request01" >
+		과목: <input type="text" name="subject" placeholder="과목명"/><br>		
+		이름: <input type="text" name="student_name" placeholder="이름"/><br>
+		번호: <input type="text" name="student_num" placeholder="학번"/><br>
+		점수: <input type="text" name="score" placeholder="점수"/><br>
+		<input type="submit" value="보내기">
+	</form>
+</body>
+</html>

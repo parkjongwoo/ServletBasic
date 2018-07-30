@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>httpServlet request</title>
+</head>
+<body>
+	<!-- init parameter 테스트 -->
+	<form method="post" action="request03?key=val&goott=no" >
+		채널: <input type="text" name="channel" placeholder="채널명"/>
+		<input type="submit" value="보내기">
+	</form>
+	<!-- 여러 url패턴 테스트 -->
+	<form method="post" action="goott" >
+		채널: <input type="text" name="goott" placeholder="채널명"/>
+		<input type="submit" value="보내기">
+	</form>
+</body>
+</html>

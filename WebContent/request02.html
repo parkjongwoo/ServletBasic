@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>httpServlet request</title>
+</head>
+<body>
+	<!-- action에 queryString지정가능. 하지만 get방식일 때는 전달 안됨. post방식때만 파라메터 전달됨. hidden으로 추가 -->
+	<form method="post" action="request02?key=val&goott=no" >
+		채널: <input type="text" name="channel" placeholder="채널명"/>
+		<input type="submit" value="보내기">
+	</form>
+</body>
+</html>
