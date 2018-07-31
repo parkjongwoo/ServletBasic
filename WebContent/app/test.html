@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>httpServlet request</title>
+</head>
+<body>
+	<h2>web content의 폴더 변경시 테스트</h2>
+	<form method="get" action="../request05"> 
+	<!-- 서블릿의 url패턴은 루트부터 시작. -->
+	<!-- action으로 서블릿을 호출할 때 html폴더 위치가 action에 추가됨. -->
+	<!-- 현재 html -->
+		레고<input type="text" name="lego"/>
+		<input type="submit" value="전송"/>
+	</form>
+</body>
+</html>

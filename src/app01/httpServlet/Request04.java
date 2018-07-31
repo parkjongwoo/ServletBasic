@@ -10,6 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * WebInitParam 테스트 기본 파라메터를 추가 가능
+ * @author goott3-4
+ *
+ */
 @WebServlet(
 		name="request04", urlPatterns= "/request04",
 		initParams= {

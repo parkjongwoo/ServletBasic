@@ -21,7 +21,7 @@ public class Request01 extends HttpServlet {
 		
 		resp.setCharacterEncoding("utf-8");
 		PrintWriter writer = resp.getWriter();
-		writer.println("<!doctype html><html><head><meta charset='utf-8'></head><body>");
+		writer.println("<!doctype html><html><head><meta charset='utf-8'></head><body>doGet호출<br>");
 		Map<String,String[]> parameters = req.getParameterMap();
 		Enumeration<String> names = req.getParameterNames();
 		
@@ -44,18 +44,32 @@ public class Request01 extends HttpServlet {
 		
 		resp.setCharacterEncoding("utf-8");
 		PrintWriter writer = resp.getWriter();
-		writer.println("<!doctype html><html><head><meta charset='utf-8'></head><body>");
+		writer.println("<!doctype html><html><head><meta charset='utf-8'></head><body>doPost호출<br>");
 		Map<String,String[]> parameters = req.getParameterMap();
 		Enumeration<String> names = req.getParameterNames();
 		
+		
+		Enumeration<String> attributeNames = req.getAttributeNames();
+		
+		//파라메터 출력
+		writer.println("요청 파라메터<br>");
 		while(names.hasMoreElements()) {
 			String name = names.nextElement();
 			for(int i=0;i<parameters.get(name).length;i++) {
-				writer.println("요청 파라메터<br>");
+				
 				writer.println(name+"["+i+"]: "+parameters.get(name)[i]+"<br>");
 				System.out.println("요청 파라메터 "+name+"["+i+"]: "+parameters.get(name)[i]);
 				
 			}
+		}
+		
+		//애트리뷰트 출력
+		writer.println("추가된 애트리뷰트<br>");
+		System.out.println("추가된 애트리뷰트");
+		while(attributeNames.hasMoreElements()) {
+			String name = attributeNames.nextElement();			
+			writer.println(name+": "+req.getAttribute(name)+"<br>");
+			System.out.println(name+": "+req.getAttribute(name));
 		}
 		writer.println("</body></html>");
 	}
