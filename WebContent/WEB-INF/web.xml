@@ -9,4 +9,24 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <context-param>
+    <param-name>myContextParam</param-name>
+    <param-value>myvalue</param-value>
+  </context-param>
+  <servlet>
+    <servlet-name>request14</servlet-name>
+    <servlet-class>app01.httpServlet.Request14</servlet-class>
+    <init-param>
+      <param-name>name</param-name>
+      <param-value>jongwoo park</param-value>
+    </init-param>
+    <init-param>
+      <param-name>email</param-name>
+      <param-value>hohoho@gmail.com</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>request14</servlet-name>
+    <url-pattern>/a/b</url-pattern>
+  </servlet-mapping>
 </web-app>

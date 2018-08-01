@@ -19,7 +19,8 @@ import javax.servlet.http.HttpServletResponse;
  * forward는 기존 request, response 객체를 유지한 상태로
  * 새로운 servlet객체에 전달하여 서버측 작업을 계속 진행한다.
  * 그러므로 클라이언트 브라우저에서는 새로운 주소를 알 수 없으며 url창도 갱신되지 않는다.
- * html파일로 forward한 경우 해당 html파일 주소가 브라우저에 표시되는 것이 아니라
+ * html파일로 forward한 경우 페이지 내용은 해당html파일로 변경되지만, 
+ * 브라우저 주소창의 주소는 해당 html파일 주소로 표시되는 것이 아니라
  * forward하기전 마지막 url주소가 유지된다.
  * 
  * 서버 자원 이용 측면으로 생각해 본다면
@@ -29,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 @WebServlet(name = "request09", urlPatterns = "/request09/child")
-public class Request09 extends HttpServlet {
+public class Request09_child extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
