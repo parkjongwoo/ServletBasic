@@ -20,7 +20,7 @@ public class DBTest implements Runnable {
 		ArrayList<DBTest> runList = new ArrayList<DBTest>();
 		ArrayList<Thread> threadList = new ArrayList<Thread>();
 		
-		for(int i=0;i<20;i++) {
+		for(int i=0;i<10;i++) {
 			DBTest run = new DBTest();
 			runList.add(run);
 			

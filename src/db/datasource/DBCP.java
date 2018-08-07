@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 /**
- * Connection Pool 사용 테스트
+ * Connection Pool 사용 테스트.기본 제공 커넥션 풀
  * @author goott3-4
  *
  */

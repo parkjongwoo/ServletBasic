@@ -6,6 +6,11 @@ import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+/**
+ * 커넥션 풀 구현 연습
+ * @author goott3-4
+ *
+ */
 public class ConnectionPoolBean {
 	
 	/**
