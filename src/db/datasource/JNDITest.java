@@ -36,7 +36,7 @@ public class JNDITest extends HttpServlet {
 			initCtx = new InitialContext();
 			envCtx = (Context) initCtx.lookup("java:comp/env");
 			
-			ds = (DataSource) envCtx.lookup("webDB");
+			ds = (DataSource) envCtx.lookup("jdbc/myoracle");
 			con = ds.getConnection();
 			
 			System.out.println("jndi connection: " + con);

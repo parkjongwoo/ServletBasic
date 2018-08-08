@@ -1,17 +1,25 @@
+DROP TABLE MEMO;
+DROP SEQUENCE SEQ_MEMO_ID;
+
 CREATE TABLE memo (
 	memoid Number(5),
-	name VARCHAR2(30),
+	name VARCHAR2(60),
 	age Number(3),
 	CONSTRAINT pk_memo_id PRIMARY KEY (memoid)
 );
 
 CREATE SEQUENCE SEQ_MEMO_ID 
+START WITH 0
+MINVALUE 0
 INCREMENT BY 1;
+
 
 SELECT * FROM memo;
 SELECT * FROM memo WHERE id=9;
 SELECT * FROM memo WHERE name like '%동3%';
 SELECT * FROM memo WHERE age=30;
+
+SELECT COUNT(*) CNT FROM memo;
 
 INSERT INTO memo values (
 SEQ_MEMO_ID.NEXTVAL,

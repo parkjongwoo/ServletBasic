@@ -1,0 +1,62 @@
+package mvc.service;
+
+import mvc.dao.page.PageDao;
+import mvc.dao.page.PageDaoImpl;
+import mvc.model.page.PageGroupResult;
+import mvc.model.page.PageInfo;
+import mvc.model.page.PageRowResult;
+import mvc.sql.SQL;
+
+public class PageManager {
+	
+	/**
+	 * 보여줄 페이지
+	 */
+	private int requestPage;
+	
+	public PageManager() {
+		this(1);
+	}
+	public PageManager(int requestPage) {
+		this.requestPage = requestPage;
+	}
+	
+	public PageRowResult getPageRowResult() {
+		// 1부터 오름차순
+		PageRowResult result = new PageRowResult();
+		int start = (requestPage-1)*PageInfo.ROW_COUNT_PER_PAGE+1;
+		result.setRowStartNumber(start);
+		result.setRowEndNumber(start + PageInfo.ROW_COUNT_PER_PAGE-1);
+		
+//		int totalRow = 500;
+//		// 마지막부터 내림차순
+//		PageRowResult result = new PageRowResult();
+//		int start = totalRow - (requestPage-1)*PageInfo.ROW_COUNT_PER_PAGE;
+//		result.setRowStartNumber(start);
+//		result.setRowEndNumber(start - PageInfo.ROW_COUNT_PER_PAGE+1);
+		return result;
+	}
+	
+	public PageGroupResult getPageGroupResult(String sql) {
+		//1페이지부터 오름차순
+		PageGroupResult result = new PageGroupResult();		
+		PageDao dao = new PageDaoImpl();		
+		int startPage = 0;
+		int endPage = 0;		
+		int groupNumber = (int)Math.ceil((double)requestPage / PageInfo.SHOW_PAGE_COUNT);		
+		int groupNumber2 = requestPage / PageInfo.SHOW_PAGE_COUNT + (requestPage%PageInfo.SHOW_PAGE_COUNT==0?0:1);
+		System.out.println("groupNumber:"+groupNumber+" groupNumber2:"+groupNumber2);
+		int totalRecord = dao.getCount(sql);
+		int totalPages = (int)Math.ceil((double)totalRecord / PageInfo.ROW_COUNT_PER_PAGE);
+		
+		endPage = Math.min(groupNumber * PageInfo.SHOW_PAGE_COUNT,totalPages);
+		startPage = Math.max(endPage - PageInfo.SHOW_PAGE_COUNT+1,1);
+		
+		result.setSelectPageNumber(requestPage);
+		result.setGroupStartNumber(startPage);
+		result.setGroupEndNumber(endPage);
+		result.setAfterPage(endPage != totalPages);
+		result.setBeforePage(startPage != 1);
+		return result;
+	}
+}

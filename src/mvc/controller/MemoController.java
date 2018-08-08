@@ -12,12 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import mvc.dao.memo.MemoDao;
 import mvc.dao.memo.MemoDaoImpl;
+import mvc.form.MemoForm;
+import mvc.memoerror.MemoError;
 import mvc.model.Memo;
+import mvc.validator.MemoValidator;
 
 /**
  * Servlet implementation class MemoController
  */
-@WebServlet(name = "memoController", urlPatterns = {"/memo_list","/memo_input","/memo_save","/memo_update","/memo_delete","/memo_detail" })
+@WebServlet(name = "memoController", urlPatterns = {"/memo_list","/memo_list_page","/memo_input_v1","/memo_input_v2","/memo_save_v1",
+		"/memo_save_v2","/memo_update","/memo_delete","/memo_detail" })
 public class MemoController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -47,17 +51,57 @@ public class MemoController extends HttpServlet {
 		int lastIndex = uri.lastIndexOf("/");
 		String action = uri.substring(lastIndex+1);
 		System.out.println("action:"+action);
-		if(action.equals("memo_input")) {
+		if(action.equals("memo_input_v1")) {
 			
-		}else if(action.equals("memo_save")) {
-			String name = request.getParameter("name");
-			int age = Integer.parseInt(request.getParameter("age"));
-			Memo memo = new Memo();
-			memo.setName(name);
-			memo.setAge(age);
+		}else if(action.equals("memo_input_v2")) {
 			
-			dao.insert(memo);
-			request.setAttribute("message", "저장 되었습니다.");
+		}else if(action.equals("memo_save_v1")) {
+//			유효성검사
+			MemoForm memoForm = new MemoForm();
+			memoForm.setName(request.getParameter("name"));
+			memoForm.setAge(request.getParameter("age"));
+			
+//			v1버전 error처리
+			MemoValidator val = new MemoValidator();
+			List<String> errors = val.validate_v1(memoForm);
+			if(!errors.isEmpty()) {
+				request.setAttribute("errors", errors);
+				request.setAttribute("memoForm", memoForm);
+			}else {
+				String name = request.getParameter("name");
+				int age = Integer.parseInt(request.getParameter("age"));
+				Memo memo = new Memo();
+				memo.setName(name);
+				memo.setAge(age);
+				
+				dao.insert(memo);
+				request.setAttribute("message", "저장 되었습니다.");				
+			}
+		
+		}else if(action.equals("memo_save_v2")) {
+			
+			
+//			유효성검사
+			MemoForm memoForm = new MemoForm();
+			memoForm.setName(request.getParameter("name"));
+			memoForm.setAge(request.getParameter("age"));
+			
+//			v2버전 error처리		
+			MemoValidator val = new MemoValidator();
+			MemoError error = val.validate_v2(memoForm);
+			if(error.isResult()) {
+				request.setAttribute("errors", error);
+				request.setAttribute("memoForm", memoForm);
+			}else {
+				String name = request.getParameter("name");
+				int age = Integer.parseInt(request.getParameter("age"));
+				Memo memo = new Memo();
+				memo.setName(name);
+				memo.setAge(age);
+				
+				dao.insert(memo);
+				request.setAttribute("message", "저장 되었습니다.");				
+			}
 			
 		}else if(action.equals("memo_update")) {
 			String name = request.getParameter("name");
@@ -76,19 +120,36 @@ public class MemoController extends HttpServlet {
 			List<Memo> list = dao.selectAll();
 			request.setAttribute("memoList", list);
 		}else if(action.equals("memo_detail")) {
-			System.out.println("memo_detail.command");
 			int memoid = Integer.parseInt(request.getParameter("memoid"));
 			Memo memo = dao.selectByMemoid(memoid);
 			request.setAttribute("memo", memo);
+			
+		}else if(action.equals("memo_list_page")) {
+			int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			
+			pageNo = pageNo<=0?1:pageNo;
+			request.setAttribute("pageNo", pageNo);
 			
 		}
 		
 		String dispatcherUrl = null;
 		
-		if(action.equals("memo_input")) {
-			dispatcherUrl = "/mvc_view/memoForm.jsp";
-		}else if(action.equals("memo_save")) {
-			dispatcherUrl = "/memo_list";
+		if(action.equals("memo_input_v1")) {
+			dispatcherUrl = "/mvc_view/memoForm_v1.jsp";
+		}if(action.equals("memo_input_v2")) {
+			dispatcherUrl = "/mvc_view/memoForm_v2.jsp";
+		}else if(action.equals("memo_save_v1")) {
+			if(request.getAttribute("errors") == null) {
+				dispatcherUrl = "/memo_list";				
+			}else {
+				dispatcherUrl = "/mvc_view/memoForm_v1.jsp";
+			}
+		}else if(action.equals("memo_save_v2")) {
+			if(request.getAttribute("errors") == null) {
+				dispatcherUrl = "/memo_list";				
+			}else {
+				dispatcherUrl = "/mvc_view/memoForm_v2.jsp";
+			}
 		}else if(action.equals("memo_update")) {
 			dispatcherUrl = "/memo_list";
 		}else if(action.equals("memo_delete")) {
@@ -97,7 +158,10 @@ public class MemoController extends HttpServlet {
 			dispatcherUrl = "/mvc_view/memoList.jsp";
 		}else if(action.equals("memo_detail")) {			
 			dispatcherUrl = "/mvc_view/memoDetail.jsp";
-		}		
+		}else if(action.equals("memo_list_page")) {
+			dispatcherUrl = "/mvc_view/memoList_page.jsp";			
+		}
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(dispatcherUrl);
 		dispatcher.forward(request, response);
 	}

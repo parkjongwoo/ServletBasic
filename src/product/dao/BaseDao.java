@@ -14,12 +14,30 @@ public class BaseDao implements Dao {
 
 	@Override
 	public Connection getConnection() {
-		Connection conn = null;
 		
+//		JNDI에 DB등록
+//		server.xml의 context 요소에 다음 resource요소 추가
+		
+//		<Resource name="jdbc/myoracle" auth="Container"
+//        type="javax.sql.DataSource" driverClassName="oracle.jdbc.driver.OracleDriver"
+//        url="jdbc:oracle:thin:@127.0.0.1:1521:orcl"
+//        username="scott" password="tiger" maxTotal="20" maxIdle="10"
+//        maxWaitMillis="-1"/>
+		
+//		web.xml에 <resource-ref> 요소추가
+		
+//		<resource-ref>
+//		<description>local Oracle DB</description>
+//		<res-ref-name>jdbc/oracledb</res-ref-name>
+//		<res-type>javax.sql.DataSource</res-type>
+//		<res-auth>Container</res-auth>
+//		</resource-ref>
+		
+		Connection conn = null;
 		try {
 			Context initContext = new InitialContext();
 			Context envContext  = (Context)initContext.lookup("java:/comp/env");
-			DataSource ds = (DataSource)envContext.lookup("jdbc/oracledb");
+			DataSource ds = (DataSource)envContext.lookup("jdbc/myoracle");
 			conn = ds.getConnection();
 			System.out.println("DB connected.");
 		} catch (NamingException e) {

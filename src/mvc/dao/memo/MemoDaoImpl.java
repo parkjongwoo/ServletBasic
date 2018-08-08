@@ -88,7 +88,29 @@ public class MemoDaoImpl extends BaseDao implements MemoDao  {
 		
 		return rs>0;
 	}
-
+	
+//	@Override
+//	public boolean insertList(List<Memo> list) {
+//		Connection con = null;
+//		PreparedStatement ps = null;
+//		int rs = 0;
+//		
+//		try {
+//			con = getConnection();
+//			ps = con.prepareStatement(SQL.MEMO_INSERT);
+//			ps.setString(1, memo.getName());
+//			ps.setInt(2, memo.getAge());			
+//			rs = ps.executeUpdate();
+//			
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			closeDBObjects(null, ps, con);
+//		}
+//		
+//		return rs>0;
+//	}
+	
 	@Override
 	public boolean update(Memo memo) {
 		Connection con = null;
