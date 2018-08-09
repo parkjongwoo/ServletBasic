@@ -1,4 +1,4 @@
-package member.dao.signin;
+package member.dao.member;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,6 +50,7 @@ public class MemberDaoImpl extends BaseDao implements MemberDao {
 			con = getConnection();
 			ps = con.prepareStatement(SQL.MEMBER_SELECT_BY_ID);
 			rs = ps.executeQuery();
+			rs.next();
 			result.setMemberid(rs.getString(1));
 			result.setPassword(rs.getString(2));
 			result.setName(rs.getString(3));
@@ -106,7 +107,7 @@ public class MemberDaoImpl extends BaseDao implements MemberDao {
 		}
 		return result>0;
 	}
-
+	
 	@Override
 	public boolean delete(String memberid) {
 		Connection con = null;
@@ -123,5 +124,35 @@ public class MemberDaoImpl extends BaseDao implements MemberDao {
 			closeDBObject(null, ps, con);
 		}
 		return result>0;
+	}
+	
+	@Override
+	public Member login(String memberid, String pw) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Member result = null;
+		try {
+			con = getConnection();
+			ps = con.prepareStatement(SQL.MEMBER_LOGIN);
+			ps.setString(1, memberid);
+			ps.setString(2, pw);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				result = new Member();
+				result.setMemberid(rs.getString(1));
+				result.setName(rs.getString(3));
+				result.setGender(rs.getString(4));
+				result.setEmail(rs.getString(5));
+				System.out.println(result);
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeDBObject(rs, ps, con);
+		}
+		return result;
 	}
 }

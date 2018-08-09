@@ -1,12 +1,11 @@
 package mvc.validator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import mvc.form.MemoForm;
 import mvc.memoerror.MemoError;
+import util.Util;
 
 /**
  * 입력값 유효성 검사 Class
@@ -24,7 +23,7 @@ public class MemoValidator {
 		String age = memo.getAge();
 		if(age==null || age.trim().isEmpty()) {
 			errors.add("나이를 입력하세요.");
-		}else if(!isNumeric(age)) {
+		}else if(!Util.isNumeric(age)) {
 			errors.add("숫자를 입력하세요.");
 		}
 		
@@ -41,13 +40,9 @@ public class MemoValidator {
 		String age = memo.getAge();
 		if(age==null || age.trim().isEmpty()) {
 			errors.setAgeErr("나이를 입력하세요.");
-		}else if(!isNumeric(age)) {
+		}else if(!Util.isNumeric(age)) {
 			errors.setAgeErr("숫자를 입력하세요.");
 		}		
 		return errors;
-	}
-	
-	public static boolean isNumeric(String strNum) {
-	    return strNum.matches("-?\\d+(\\.\\d+)?");
 	}
 }

@@ -1,4 +1,4 @@
-package member.dao.signin;
+package member.dao.member;
 
 import java.util.List;
 
@@ -9,5 +9,6 @@ public interface MemberDao {
 	Member selecteById(String memberid);
 	boolean insert(Member signin);
 	boolean update(Member signin);
-	boolean delete(String memberid);	
+	boolean delete(String memberid);
+	Member login(String memberid, String pw);
 }

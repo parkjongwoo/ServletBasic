@@ -2,46 +2,14 @@ package member.test;
 
 import java.util.List;
 
-import member.dao.signin.MemberDao;
-import member.dao.signin.MemberDaoImpl;
+import member.dao.member.MemberDao;
 import member.model.Member;
-import member.sql.SQL;
-import mvc.model.page.PageGroupResult;
-import mvc.service.PageManager;
 
 public class TestMember {
 
 	public static void main(String[] args) {
-		MemberDao dao = new MemberDaoImpl();
-//		for(int i=1;i<20;i++) {
-//			selectByPageNo(dao, i);			
-//		}
-		selectAll(dao);
-		
-//		Member memo = dao.selecteById("");
-//		System.out.println("dao.selectByMemberid(15)=========");
-//		System.out.println(memo);
-//		System.out.println("==============================");
-//		
-//		Member member_insert = new Member();
-//		member_insert.setMemberid("shoong");
-//		member_insert.setPassword("ppppp");
-//		member_insert.setName("박종우");
-//		member_insert.setEmail("shoong1999@gmail.com");
-//		dao.insert(member_insert);
-//		
-//		selectAll(dao);
-//		
-//		member_insert.setPassword("aaaaa");
-//		member_insert.setName("박종우2");
-//		member_insert.setEmail("shoong19992@gmail.com");
-//		dao.update(member_insert);
-//		
-//		selectAll(dao);
-//		
-//		dao.delete("shoong");
-//		selectAll(dao);
-		
+		System.out.println("aaAbs*dfs2223".matches("^(?=.*\\d)(?=.*[~`!@#$%\\^&*()-])(?=.*[a-z])(?=.*[A-Z]).{9,12}$"));
+		System.out.println("abcde".matches("^[a-zA-Z]{1}[a-zA-Z0-9_]{4,11}$"));
 	}
 	
 	public static void selectAll(MemberDao dao) {		

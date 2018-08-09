@@ -10,15 +10,23 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import member.dao.signin.MemberDao;
-import member.dao.signin.MemberDaoImpl;
+import member.dao.member.MemberDao;
+import member.dao.member.MemberDaoImpl;
+import member.form.MemberForm;
+import member.membererror.MemberError;
 import member.model.Member;
+import member.validator.MemberValidator;
+import mvc.memoerror.MemoError;
+import mvc.model.Memo;
+import mvc.validator.MemoValidator;
 
 /**
  * Servlet implementation class SigninController
  */
-@WebServlet(name = "signinController", urlPatterns = { "/memberList" })
+@WebServlet(name = "memberController", urlPatterns = { "","/home","/memberList", "/memberForm", "/memberInput", 
+		"/memberDetail", "/memberDelete","/pwRecheck","/memberUpdate"})
 public class MemberController extends HttpServlet implements Servlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -27,21 +35,58 @@ public class MemberController extends HttpServlet implements Servlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
 		String uri = request.getRequestURI();
 		int actionIndex = uri.lastIndexOf("/");
 		String action = uri.substring(actionIndex+1);
+		System.out.println("uri: "+uri+" action:"+action);
 		
-		if(action.equals("memberList")) {
+		if(action.equals("")) {
+			
+		}else if(action.equals("memberList")) {
 			List<Member> list = dao.selectAll();
 			request.setAttribute("memberList", list);
+		}else if(action.equals("memberForm")) {
+			
+		}else if(action.equals("memberDetail")) {
+			
+		}else if(action.equals("home")) {
+			
 		}
 		
 		String requestURL = null;
 		
-		if(action.equals("memberList")) {
+		if(action.equals("")) {
+			requestURL = "/member_view/index.html";
+		}else if(action.equals("memberList")) {
 			requestURL = "/member_view/memberList.jsp";
+		}else if(action.equals("memberForm")) {
+			requestURL = "/member_view/memberForm.jsp";
+		}else if(action.equals("memberDetail")) {			
+			String loginId = String.valueOf(request.getSession().getAttribute("loginId"));
+			
+//			if(!"null".equals(loginId)) {
+//				String confirmed = String.valueOf(request.getAttribute("confirmed"));
+//				if("true".equals(confirmed)) {
+//					requestURL = "/member_view/memberDetail.jsp";
+//				}else {
+//					requestURL = "/member_view/pwRecheck.jsp";
+//				}				
+//			}else {
+//				requestURL = "/member_view/memberLogin.jsp";
+//			}
+			//로그인 나중에 처리
+			String confirmed = String.valueOf(request.getAttribute("confirmed"));
+			if("true".equals(confirmed)) {
+				requestURL = "/member_view/memberDetail.jsp";
+			}else {
+				requestURL = "/member_view/pwRecheck.jsp";
+			}
+		}else if(action.equals("home")) {
+			requestURL = "/member_view/index.html";
 		}
-		
+		System.out.println("requestURL: "+requestURL);
 		RequestDispatcher dispatcher = request.getRequestDispatcher(requestURL);
 		dispatcher.forward(request, response);
 	}
@@ -49,9 +94,140 @@ public class MemberController extends HttpServlet implements Servlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
+		String uri = request.getRequestURI();
+		int actionIndex = uri.lastIndexOf("/");
+		String action = uri.substring(actionIndex+1);
+		System.out.println("uri: "+uri+" action:"+action);
 		
-		doGet(request, response);
+		if(action.equals("memberInput")) {
+			MemberForm form = new MemberForm();
+			form.setMemberid(request.getParameter("memberid"));
+			form.setPw1(request.getParameter("pw1"));
+			form.setPw2(request.getParameter("pw2"));
+			form.setName(request.getParameter("name"));
+			form.setGender(request.getParameter("gender"));
+			form.setEmail(request.getParameter("email"));
+			
+			MemberValidator val = new MemberValidator();
+			MemberError error = val.validate(form);
+			if(error.isResult()) {
+				request.setAttribute("errors", error);
+				request.setAttribute("memberForm", form);
+				System.out.println("error:"+error);
+				System.out.println("memberForm:"+form);
+			}else {				
+				Member member = new Member();
+				member.setMemberid(request.getParameter("memberid"));
+				member.setPassword(request.getParameter("pw1"));
+				member.setName(request.getParameter("name"));
+				member.setGender(request.getParameter("gender"));
+				member.setEmail(request.getParameter("email"));
+				
+				dao.insert(member);
+				request.setAttribute("message", "저장 되었습니다.");				
+			}
+		}else if(action.equals("memberList")) {
+			List<Member> list = dao.selectAll();
+			request.setAttribute("memberList", list);
+		}else if(action.equals("memberDetail")) {			
+				
+		}else if(action.equals("pwRecheck")) {			
+			String memberid = request.getParameter("memberid");
+			String pw = request.getParameter("pw");	
+			Member member = dao.login(memberid, pw);
+			if(member!=null) {
+				System.out.println("pwRecheck member:"+member);
+				request.setAttribute("member", member);
+				request.setAttribute("confirmed", true);
+			}				
+		}else if(action.equals("home")) {
+			
+		}else if(action.equals("memberUpdate")) {
+			MemberForm form = new MemberForm();
+			form.setMemberid(request.getParameter("memberid"));//세션정보로 변경
+			form.setPw1(request.getParameter("pw1"));
+			form.setPw2(request.getParameter("pw2"));
+			form.setName(request.getParameter("name"));
+			form.setGender(request.getParameter("gender"));
+			form.setEmail(request.getParameter("email"));
+			
+			MemberValidator val = new MemberValidator();
+			MemberError error = val.updateValidate(form);
+			if(error.isResult()) {
+				request.setAttribute("errors", error);
+				request.setAttribute("memberForm", form);
+				System.out.println("error:"+error);
+				System.out.println("memberForm:"+form);
+				request.setAttribute("confirmed",true);
+			}else {				
+				Member member = new Member();
+				member.setMemberid(request.getParameter("memberid"));
+				member.setPassword(request.getParameter("pw1"));
+				member.setName(request.getParameter("name"));
+				member.setGender(request.getParameter("gender"));
+				member.setEmail(request.getParameter("email"));
+				
+				dao.update(member);
+				request.setAttribute("message", "저장 되었습니다.");				
+			}
+		}
+		
+		String requestURL = null;
+		
+		if(action.equals("memberInput")) {
+			if(request.getAttribute("errors")==null) 
+				requestURL = "/memberList";				
+			else
+				requestURL = "/member_view/memberForm.jsp";
+		}else if(action.equals("memberList")) {
+			requestURL = "/member_view/memberList.jsp";
+		}else if(action.equals("memberDetail")) {
+			String loginId = String.valueOf(request.getSession().getAttribute("loginId"));
+			
+//			if("true".equals(loginId)) {
+//				String confirmed = String.valueOf(request.getAttribute("confirmed"));
+//				if(!"true".equals(confirmed)) {
+//					confirmed = request.getParameter("confirmed");
+//				}
+//				if("true".equals(confirmed)) {
+//					requestURL = "/member_view/memberDetail.jsp";
+//				}else {
+//					requestURL = "/member_view/pwRecheck.jsp";
+//				}				
+//			}else {
+//				requestURL = "/member_view/memberLogin.jsp";
+//			}
+			//로그인 나중에 처리
+			String confirmed = String.valueOf(request.getAttribute("confirmed"));
+			if(!"true".equals(confirmed)) {
+				confirmed = request.getParameter("confirmed");
+			}
+			if("true".equals(confirmed)) {
+				requestURL = "/member_view/memberDetail.jsp";
+			}else {
+				requestURL = "/member_view/pwRecheck.jsp";
+			}
+		}else if(action.equals("pwRecheck")) {		
+			if(request.getAttribute("member")!=null) {							
+				requestURL = "/memberDetail";				
+			}else {
+				requestURL = "/member_view/pwRecheck.jsp";
+			}
+			
+		}else if(action.equals("home")) {
+			requestURL = "/member_view/index.html";
+		}else if(action.equals("memberUpdate")) {
+			if(request.getAttribute("errors")==null) 
+				requestURL = "/memberList";				
+			else
+				requestURL = "/memberDetail";			
+		}
+		System.out.println("requestURL: "+requestURL);
+		RequestDispatcher dispatcher = request.getRequestDispatcher(requestURL);
+		dispatcher.forward(request, response);
 	}
 
 }
