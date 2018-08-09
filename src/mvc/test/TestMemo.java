@@ -11,8 +11,10 @@ import mvc.sql.SQL;
 public class TestMemo {
 
 	public static void main(String[] args) {
-		MemoDaoImpl dao = new MemoDaoImpl();
-		
+//		MemoDaoImpl dao = new MemoDaoImpl();
+//		for(int i=1;i<20;i++) {
+//			selectByPageNo(dao, i);			
+//		}
 //		selectAll(dao);
 //		
 //		Memo memo = dao.selectByMemoid(15);
@@ -55,19 +57,19 @@ public class TestMemo {
 //			
 //		}
 		
-		for(int i=1;i<100;i++) {
-			PageManager pm = new PageManager(i);
-			PageGroupResult result = pm.getPageGroupResult(SQL.MEMO_ALL_COUNT);
-			System.out.println("========================");
-			System.out.println("requestPage:"+i);
-			System.out.println("requestPage:"+result.getSelectPageNumber());
-			System.out.println("start:"+result.getGroupStartNumber());
-			System.out.println("end:"+result.getGroupEndNumber());
-			System.out.println("isAfter:"+result.isAfterPage());
-			System.out.println("isBefore:"+result.isBeforePage());			
-			System.out.println("========================");
-			
-		}
+//		for(int i=1;i<100;i++) {
+//			PageManager pm = new PageManager(i);
+//			PageGroupResult result = pm.getPageGroupResult(SQL.MEMO_ALL_COUNT);
+//			System.out.println("========================");
+//			System.out.println("requestPage:"+i);
+//			System.out.println("requestPage:"+result.getSelectPageNumber());
+//			System.out.println("start:"+result.getGroupStartNumber());
+//			System.out.println("end:"+result.getGroupEndNumber());
+//			System.out.println("isAfter:"+result.isAfterPage());
+//			System.out.println("isBefore:"+result.isBeforePage());			
+//			System.out.println("========================");
+//			
+//		}
 	}
 	
 	public static void selectAll(MemoDaoImpl dao) {		
@@ -79,5 +81,14 @@ public class TestMemo {
 		}
 		System.out.println("==============================");
 	}
-
+	
+	public static void selectByPageNo(MemoDaoImpl dao, PageManager pm) {		
+		List<Memo> list = dao.select(pm);
+		PageGroupResult pgr = pm.getPageGroupResult(SQL.MEMO_ALL_COUNT);
+		System.out.println("select "+pgr.getSelectPageNumber()+" page=========");
+		for(int i=0;i<list.size();i++) {
+			System.out.println(list.get(i).toString());
+		}
+		System.out.println("==============================");
+	}
 }

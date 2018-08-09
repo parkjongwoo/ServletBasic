@@ -45,6 +45,27 @@ $(document).ready(function(){
 				</tr>
 			</c:forEach>
 		</table>
+		<div class="text-center">
+			<ul class="pagination">
+				<c:if test="${pageGroupResult.beforePage}">
+					<li class="previous"><a href="memo_list_page?pageNo=${pageGroupResult.groupStartNumber-1}">이전</a></li>
+				</c:if>
+				<c:forEach var="pageIdx" begin="${pageGroupResult.groupStartNumber}" 
+				end="${pageGroupResult.groupEndNumber}" step="1" varStatus="status">
+					<c:choose>
+					    <c:when test="${pageGroupResult.selectPageNumber == pageIdx}">
+					        <li class="active"><a href="memo_list_page?pageNo=${pageIdx}">${pageIdx}</a></li>
+					    </c:when>
+					    <c:when test="${pageGroupResult.selectPageNumber != pageIdx}">
+					        <li><a href="memo_list_page?pageNo=${pageIdx}">${pageIdx}</a></li>
+					    </c:when>
+					</c:choose>					
+				</c:forEach>
+				<c:if test="${pageGroupResult.afterPage}">
+					<li class="next"><a href="memo_list_page?pageNo=${pageGroupResult.groupEndNumber+1}">다음</a></li>
+				</c:if>
+			</ul>
+		</div>
 		<a href="memo_input_v1">새메모입력_유효성검사1</a>
 		<a href="memo_input_v2">새메모입력_유효성검사2</a>
 	</div>

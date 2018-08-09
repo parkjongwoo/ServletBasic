@@ -16,6 +16,10 @@ public class SQL {
 	public static final String MEMO_SELECT_BY_NAME = MEMO_SELECT_ALL + " WHERE "+MEMO_COLUMN_NAME_NAME+" LIKE ?";
 	public static final String MEMO_SELECT_BY_MEMO = MEMO_SELECT_ALL + " WHERE "+MEMO_COLUMN_NAME_AGE+" LIKE ?";
 	public static final String MEMO_ALL_COUNT = "SELECT COUNT(*) "+MEMO_ALL_COUNT_COLUMN_NAME+" FROM " + MEMO_TABLE_NAME_MEMO;
+	public static final String MEMO_SELECT_BY_COUNT = "SELECT memoid, name, age FROM "
+			+ " (SELECT rownum rnum, m.* FROM "
+			+ " (SELECT * FROM memo ORDER BY memoid ASC) m) "
+			+ " WHERE rnum BETWEEN ? AND ?";
 	
 	public static final String MEMO_INSERT = "INSERT INTO "+MEMO_TABLE_NAME_MEMO+" VALUES (" + 
 												MEMO_SEQ_ID + ".NEXTVAL, " + 

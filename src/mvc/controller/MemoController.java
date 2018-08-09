@@ -15,6 +15,10 @@ import mvc.dao.memo.MemoDaoImpl;
 import mvc.form.MemoForm;
 import mvc.memoerror.MemoError;
 import mvc.model.Memo;
+import mvc.model.page.PageGroupResult;
+import mvc.model.page.PageRowResult;
+import mvc.service.PageManager;
+import mvc.sql.SQL;
 import mvc.validator.MemoValidator;
 
 /**
@@ -125,11 +129,14 @@ public class MemoController extends HttpServlet {
 			request.setAttribute("memo", memo);
 			
 		}else if(action.equals("memo_list_page")) {
-			int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			String pageNoS = request.getParameter("pageNo");			
+			int pageNo = MemoValidator.isNumeric(pageNoS)?Integer.parseInt(pageNoS):1;			
+			PageManager pm = new PageManager(pageNo, SQL.MEMO_ALL_COUNT);
 			
-			pageNo = pageNo<=0?1:pageNo;
-			request.setAttribute("pageNo", pageNo);
-			
+			PageGroupResult pageGroupResult = pm.getPageGroupResult(SQL.MEMO_ALL_COUNT);
+			List<Memo> list = dao.select(pm);
+			request.setAttribute("memoList", list);
+			request.setAttribute("pageGroupResult", pageGroupResult);
 		}
 		
 		String dispatcherUrl = null;

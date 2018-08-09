@@ -8,6 +8,11 @@ import java.util.Map;
 import mvc.form.MemoForm;
 import mvc.memoerror.MemoError;
 
+/**
+ * 입력값 유효성 검사 Class
+ * @author goott3-4
+ *
+ */
 public class MemoValidator {
 	
 	public List<String> validate_v1(MemoForm memo){

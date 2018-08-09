@@ -9,10 +9,44 @@ import java.util.List;
 
 import mvc.dao.BaseDao;
 import mvc.model.Memo;
+import mvc.model.page.PageRowResult;
+import mvc.service.PageManager;
 import mvc.sql.SQL;
 
 public class MemoDaoImpl extends BaseDao implements MemoDao  {
-
+	
+	@Override
+	public List<Memo> select(PageManager pm) {
+		
+		List<Memo> result = new ArrayList<Memo>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		PageRowResult pr = pm.getPageRowResult();
+		
+		try {
+			con = getConnection();
+			ps = con.prepareStatement(SQL.MEMO_SELECT_BY_COUNT);
+			ps.setInt(1, pr.getRowStartNumber());
+			ps.setInt(2, pr.getRowEndNumber());
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Memo memo = new Memo();
+				memo.setMemoid(rs.getInt(SQL.MEMO_COLUMN_NAME_ID));
+				memo.setName(rs.getString(SQL.MEMO_COLUMN_NAME_NAME));
+				memo.setAge(rs.getInt(SQL.MEMO_COLUMN_NAME_AGE));
+				
+				result.add(memo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeDBObjects(rs, ps, con);
+		}
+		
+		return result;
+	}
+	
 	@Override
 	public List<Memo> selectAll() {
 		Connection con = null;

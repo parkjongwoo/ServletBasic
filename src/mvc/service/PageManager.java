@@ -5,7 +5,6 @@ import mvc.dao.page.PageDaoImpl;
 import mvc.model.page.PageGroupResult;
 import mvc.model.page.PageInfo;
 import mvc.model.page.PageRowResult;
-import mvc.sql.SQL;
 
 public class PageManager {
 	
@@ -14,11 +13,25 @@ public class PageManager {
 	 */
 	private int requestPage;
 	
-	public PageManager() {
-		this(1);
-	}
+	public PageManager() {}
 	public PageManager(int requestPage) {
-		this.requestPage = requestPage;
+		this.requestPage = requestPage;		
+	}
+	public PageManager(int requestPage, String sql) {
+		this(requestPage);
+		this.requestPage = getManagedPageNum(sql);	
+	}
+	
+	public int getManagedPageNum(String sql) {
+		PageDao dao = new PageDaoImpl();
+		int totalRecord = dao.getCount(sql);
+		int totalPages = (int)Math.ceil((double)totalRecord / PageInfo.ROW_COUNT_PER_PAGE);
+		
+		if(totalPages < requestPage)
+			return totalPages;
+		else if(requestPage<=0)
+			return 1;
+		return requestPage;
 	}
 	
 	public PageRowResult getPageRowResult() {
@@ -39,13 +52,13 @@ public class PageManager {
 	
 	public PageGroupResult getPageGroupResult(String sql) {
 		//1페이지부터 오름차순
+//		int groupNumber2 = requestPage / PageInfo.SHOW_PAGE_COUNT + (requestPage%PageInfo.SHOW_PAGE_COUNT==0?0:1);
+//		System.out.println("groupNumber:"+groupNumber+" groupNumber2:"+groupNumber2);
 		PageGroupResult result = new PageGroupResult();		
 		PageDao dao = new PageDaoImpl();		
 		int startPage = 0;
 		int endPage = 0;		
 		int groupNumber = (int)Math.ceil((double)requestPage / PageInfo.SHOW_PAGE_COUNT);		
-		int groupNumber2 = requestPage / PageInfo.SHOW_PAGE_COUNT + (requestPage%PageInfo.SHOW_PAGE_COUNT==0?0:1);
-		System.out.println("groupNumber:"+groupNumber+" groupNumber2:"+groupNumber2);
 		int totalRecord = dao.getCount(sql);
 		int totalPages = (int)Math.ceil((double)totalRecord / PageInfo.ROW_COUNT_PER_PAGE);
 		
