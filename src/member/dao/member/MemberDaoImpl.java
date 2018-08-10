@@ -45,17 +45,20 @@ public class MemberDaoImpl extends BaseDao implements MemberDao {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		Member result = new Member();
+		Member result = null;
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(SQL.MEMBER_SELECT_BY_ID);
+			ps.setString(1, memberid);
 			rs = ps.executeQuery();
-			rs.next();
-			result.setMemberid(rs.getString(1));
-			result.setPassword(rs.getString(2));
-			result.setName(rs.getString(3));
-			result.setGender(rs.getString(4));
-			result.setEmail(rs.getString(5));
+			if(rs.next()) {
+				result = new Member();
+				result.setMemberid(rs.getString(1));
+				result.setPassword(rs.getString(2));
+				result.setName(rs.getString(3));
+				result.setGender(rs.getString(4));
+				result.setEmail(rs.getString(5));				
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -127,7 +130,7 @@ public class MemberDaoImpl extends BaseDao implements MemberDao {
 	}
 	
 	@Override
-	public Member login(String memberid, String pw) {
+	public Member getUserInfo(String memberid, String pw) {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -154,5 +157,5 @@ public class MemberDaoImpl extends BaseDao implements MemberDao {
 			closeDBObject(rs, ps, con);
 		}
 		return result;
-	}
+	}	
 }

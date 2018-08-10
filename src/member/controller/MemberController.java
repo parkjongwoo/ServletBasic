@@ -26,7 +26,7 @@ import mvc.validator.MemoValidator;
  * Servlet implementation class SigninController
  */
 @WebServlet(name = "memberController", urlPatterns = { "","/home","/memberList", "/memberForm", "/memberInput", 
-		"/memberDetail", "/memberDelete","/pwRecheck","/memberUpdate"})
+		"/memberDetail", "/memberDelete","/pwRecheck","/memberUpdate","/idcheck","/login","/loginForm","/logout"})
 public class MemberController extends HttpServlet implements Servlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -53,39 +53,45 @@ public class MemberController extends HttpServlet implements Servlet {
 			
 		}else if(action.equals("home")) {
 			
+		}else if(action.equals("idcheck")) {
+			String id = request.getParameter("memberid");
+		}else if(action.equals("loginForm")) {
+			
+		}else if(action.equals("logout")) {
+			request.getSession().removeAttribute("member");
 		}
 		
 		String requestURL = null;
 		
 		if(action.equals("")) {
-			requestURL = "/member_view/index.html";
+			requestURL = "/member_view/index.jsp";
 		}else if(action.equals("memberList")) {
 			requestURL = "/member_view/memberList.jsp";
 		}else if(action.equals("memberForm")) {
 			requestURL = "/member_view/memberForm.jsp";
 		}else if(action.equals("memberDetail")) {			
-			String loginId = String.valueOf(request.getSession().getAttribute("loginId"));
+			Member loginMember = (Member)request.getSession().getAttribute("member");
 			
-//			if(!"null".equals(loginId)) {
-//				String confirmed = String.valueOf(request.getAttribute("confirmed"));
-//				if("true".equals(confirmed)) {
-//					requestURL = "/member_view/memberDetail.jsp";
-//				}else {
-//					requestURL = "/member_view/pwRecheck.jsp";
-//				}				
-//			}else {
-//				requestURL = "/member_view/memberLogin.jsp";
-//			}
-			//로그인 나중에 처리
-			String confirmed = String.valueOf(request.getAttribute("confirmed"));
-			if("true".equals(confirmed)) {
-				requestURL = "/member_view/memberDetail.jsp";
+			if(loginMember != null) {
+				String confirmed = String.valueOf(request.getAttribute("confirmed"));
+				if("true".equals(confirmed)) {
+					requestURL = "/member_view/memberDetail.jsp";
+				}else {
+					requestURL = "/member_view/pwRecheck.jsp";
+				}				
 			}else {
-				requestURL = "/member_view/pwRecheck.jsp";
-			}
+				requestURL = "/member_view/loginForm.jsp";
+			}			
 		}else if(action.equals("home")) {
-			requestURL = "/member_view/index.html";
+			requestURL = "/member_view/index.jsp";
+		}else if(action.equals("idcheck")) {
+			
+		}else if(action.equals("loginForm")) {
+			requestURL = "/member_view/loginForm.jsp";
+		}else if(action.equals("logout")) {
+			requestURL = "/home";
 		}
+		
 		System.out.println("requestURL: "+requestURL);
 		RequestDispatcher dispatcher = request.getRequestDispatcher(requestURL);
 		dispatcher.forward(request, response);
@@ -137,7 +143,7 @@ public class MemberController extends HttpServlet implements Servlet {
 		}else if(action.equals("pwRecheck")) {			
 			String memberid = request.getParameter("memberid");
 			String pw = request.getParameter("pw");	
-			Member member = dao.login(memberid, pw);
+			Member member = dao.getUserInfo(memberid, pw);
 			if(member!=null) {
 				System.out.println("pwRecheck member:"+member);
 				request.setAttribute("member", member);
@@ -170,9 +176,25 @@ public class MemberController extends HttpServlet implements Servlet {
 				member.setGender(request.getParameter("gender"));
 				member.setEmail(request.getParameter("email"));
 				
-				dao.update(member);
+				dao.update(member);//TODO 미기재 회원정보 처리필요
 				request.setAttribute("message", "저장 되었습니다.");				
 			}
+		}else if(action.equals("login")) {
+			String memberid = request.getParameter("memberid");
+			String pw = request.getParameter("pw");	
+			Member member = dao.selecteById(memberid);
+			if(member==null) {//맞지 않는 아이디
+				request.setAttribute("message", "맞지않는 아이디 입니다.");
+			}else {
+				System.out.println("member.getPassword():"+member.getPassword()+" pw:"+pw);
+				if(member.getPassword().equals(pw)) {//로그인 성공
+					request.getSession().setAttribute("member", member);
+					request.setAttribute("message", "로그인되었습니다.");
+					
+				}else {//패스워드 틀림
+					request.setAttribute("message", "암호가 올바르지 않습니다.");
+				}
+			}			
 		}
 		
 		String requestURL = null;
@@ -185,31 +207,22 @@ public class MemberController extends HttpServlet implements Servlet {
 		}else if(action.equals("memberList")) {
 			requestURL = "/member_view/memberList.jsp";
 		}else if(action.equals("memberDetail")) {
-			String loginId = String.valueOf(request.getSession().getAttribute("loginId"));
+			Member loginMember = (Member)request.getSession().getAttribute("member");
 			
-//			if("true".equals(loginId)) {
-//				String confirmed = String.valueOf(request.getAttribute("confirmed"));
-//				if(!"true".equals(confirmed)) {
-//					confirmed = request.getParameter("confirmed");
-//				}
-//				if("true".equals(confirmed)) {
-//					requestURL = "/member_view/memberDetail.jsp";
-//				}else {
-//					requestURL = "/member_view/pwRecheck.jsp";
-//				}				
-//			}else {
-//				requestURL = "/member_view/memberLogin.jsp";
-//			}
-			//로그인 나중에 처리
-			String confirmed = String.valueOf(request.getAttribute("confirmed"));
-			if(!"true".equals(confirmed)) {
-				confirmed = request.getParameter("confirmed");
-			}
-			if("true".equals(confirmed)) {
-				requestURL = "/member_view/memberDetail.jsp";
+			if(loginMember!=null) {
+				String confirmed = String.valueOf(request.getAttribute("confirmed"));
+				if(!"true".equals(confirmed)) {
+					confirmed = request.getParameter("confirmed");
+				}
+				if("true".equals(confirmed)) {
+					requestURL = "/member_view/memberDetail.jsp";
+				}else {
+					requestURL = "/member_view/pwRecheck.jsp";
+				}				
 			}else {
-				requestURL = "/member_view/pwRecheck.jsp";
+				requestURL = "/member_view/loginForm.jsp";
 			}
+			
 		}else if(action.equals("pwRecheck")) {		
 			if(request.getAttribute("member")!=null) {							
 				requestURL = "/memberDetail";				
@@ -218,13 +231,21 @@ public class MemberController extends HttpServlet implements Servlet {
 			}
 			
 		}else if(action.equals("home")) {
-			requestURL = "/member_view/index.html";
+			requestURL = "/member_view/index.jsp";
 		}else if(action.equals("memberUpdate")) {
 			if(request.getAttribute("errors")==null) 
 				requestURL = "/memberList";				
 			else
 				requestURL = "/memberDetail";			
+		}else if(action.equals("login")) {
+			if(request.getSession().getAttribute("member")==null) {
+				requestURL = "/member_view/wellcome.jsp";
+			}else {
+				requestURL = "/member_view/index.jsp";
+			}
 		}
+		
+		
 		System.out.println("requestURL: "+requestURL);
 		RequestDispatcher dispatcher = request.getRequestDispatcher(requestURL);
 		dispatcher.forward(request, response);

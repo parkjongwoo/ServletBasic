@@ -24,7 +24,7 @@
 				<label class="col-sm-2 control-label" for="memberid">아이디:</label>
 				<div class="col-sm-10">
 					<input class="form-control" type="text" name="memberid" value="${memberForm.memberid}"
-						id="memberid"> <span class="help-block text-danger">${errors.memberidError}</span>
+						id="memberid"><a href="idcheck?memberid=${memberForm.memberid}">중복체크</a> <span class="help-block text-danger">${errors.memberidError}</span>
 				</div>
 			</div>
 			<div class="form-group form-group-lg">

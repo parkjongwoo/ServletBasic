@@ -10,5 +10,5 @@ public interface MemberDao {
 	boolean insert(Member signin);
 	boolean update(Member signin);
 	boolean delete(String memberid);
-	Member login(String memberid, String pw);
+	Member getUserInfo(String memberid, String pw);
 }

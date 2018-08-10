@@ -31,6 +31,11 @@ public class SQL {
 			MEMBER_COLUMN_NAME_ZENDER+" = ?, " +
 			MEMBER_COLUMN_NAME_EMAIL+" = ? " +
 			" WHERE "+MEMBER_COLUMN_NAME_ID+"=?";
+	public static final String MEMBER_UPDATE_NZE = "UPDATE "+ MEMBER_TABLE_NAME_MEMBER +" SET "+ 
+			MEMBER_COLUMN_NAME_NAME+" = ?, " + 
+			MEMBER_COLUMN_NAME_ZENDER+" = ?, " +
+			MEMBER_COLUMN_NAME_EMAIL+" = ? " +
+			" WHERE "+MEMBER_COLUMN_NAME_ID+"=?";
 	
 	public static final String MEMBER_LOGIN = "SELECT * FROM "+MEMBER_TABLE_NAME_MEMBER + 
 			" WHERE "+MEMBER_COLUMN_NAME_ID+"=? and " +MEMBER_COLUMN_NAME_PW+"=?";

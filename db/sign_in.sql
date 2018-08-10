@@ -17,11 +17,12 @@ INSERT INTO member values(
 );
 
 UPDATE member SET
-	name = '헐랭이2',
+	password = 'Qqq*%1111',
+	name = '박종우',
 	gender = '남자',
-	email = 'shoong19992@gmail.com'
+	email = 'shoong1999@gmail.com'
 WHERE 
-	memberid = 'skyholds1';
+	memberid = 'helloworld19';
 
 SELECT * FROM member;
 SELECT * FROM member WHERE memberid='skyholds1';

@@ -23,8 +23,8 @@
 			<div class="form-group form-group-lg">
 				<label class="col-sm-2 control-label" for="memberid">아이디:</label>
 				<div class="col-sm-10">
-					<p class="form-control-static">skyholds1</p>
-					<input class="form-control" type="hidden" name="memberid" value="skyholds1"
+					<p class="form-control-static">${member.memberid}</p>
+					<input class="form-control" type="hidden" name="memberid" value="${member.memberid}"
 						id="memberid"> 
 				</div>
 			</div>

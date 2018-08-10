@@ -15,7 +15,7 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<form action="memberInput" method="post">
+	<form action="login" method="post">
 		<div class="page-header">
 			<h1>로그인</h1>
 		</div>
@@ -23,18 +23,20 @@
 			<label class="col-sm-2 control-label" for="memberid">아이디:</label>
 			<div class="col-sm-10">
 				<input class="form-control" type="text" name="memberid"
-					value="${memberForm.memberid}" id="memberid"> <span
+					value="" id="memberid"> <span
 					class="help-block text-danger">${errors.memberidError}</span>
 			</div>
 		</div>
 		<div class="form-group form-group-lg">
 			<label class="col-sm-2 control-label" for="password">비밀번호:</label>
 			<div class="col-sm-10">
-				<input class="form-control" type="password" name="password"
+				<input class="form-control" type="password" name="pw"
 					value="" id="memberid"> <span
 					class="help-block text-danger">${errors.memberidError}</span>
 			</div>
 		</div>
+		<input class="col-sm-12 btn btn-default input-lg" type="submit"
+				value="로그인">
 	</form>
 </body>
 </html>
