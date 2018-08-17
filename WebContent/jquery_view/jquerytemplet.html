@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript"
+	src="https://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+<!-- el스타일로 연관데이터 위치를 지정해주면 ok -->
+<script id="itemTemplate" type="text/x-jquery-templ">
+<li>
+<a href="#">
+	<span class="text">
+		<span class="title">${subject}</span>
+		<span class="desc">${content}</span>
+		<span class="info">등록일시 : ${date}</span>
+	</span>
+</a>
+</li>
+</script>
+<script type="text/javascript">
+	$(function() {
+		var data={
+			"list":[
+				{
+					"subject":"밥먹는법",
+					"content":"수저를 떠서 밥을 퍼 먹는다",
+					"date":"2018-08-20"
+				},	
+				{
+					"subject":"밥먹는법2",
+					"content":"수저를 떠서 밥을 퍼 먹는다2",
+					"date":"2018-08-21"
+				},	
+				{
+					"subject":"밥먹는법3",
+					"content":"수저를 떠서 밥을 퍼 먹는다3",
+					"date":"2018-08-22"
+				}
+			]	
+		};
+		
+		var div = $("#itemTemplate").tmpl(data.list);
+		$("#list").html(div);
+	});
+	
+</script>
+</head>
+<body>
+	<h1>커플의 모든것</h1>
+	<ul id="list">
+		
+	</ul>
+	
+</body>
+</html>

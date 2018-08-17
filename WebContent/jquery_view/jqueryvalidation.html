@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link type="text/css" rel="stylesheet" href="../css/common.css"/>
+<link type="text/css" rel="stylesheet" href="../css/reset.css"/>
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- <script -->
+<!-- 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+<script type="text/javascript"
+	src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script type="text/javascript">
+	$(function() {
+		$("#signupForm").validate({
+			debug : true,
+			rule : {
+				username : "required",
+				age : {
+					required : true,
+					digits : true
+				},
+				userid : {
+					required : true,
+					minlength : 4
+				},
+				pwd : {
+					required : true,
+					minlength : 4,
+					maxlength : 8
+				},
+				pwd_re : {
+					required : true,
+					equirlto : pwd
+				},
+				email : {
+					required : true,
+					email : true
+				},
+				weburl : {
+					url : true
+				},
+				topic : {
+					required : "#newsletterL:checked",
+					minlength : 2
+				},
+				agree : "required"
+			},
+			messages : {
+				username : "이름은 필수입력사항 입니다.",
+				age : {
+					required : "이름은 필수입력사항 입니다.",
+					digits : "나이는 숫자만 입력 가능 합니다."
+				},
+				userid : {
+					required : "아이디는 필수입력사항 입니다.",
+					minlength : "아이디는 4자 이상 입력해 주세요."
+				},
+				pwd : {
+					required : "비밀번호는 필수입력사항 입니다.",
+					minlength : "비밀번호는 4자 이상, 8자 이하로 입력해 주세요.",
+					maxlength : "비밀번호는 4자 이상, 8자 이하로 입력해 주세요."
+				},
+				pwd_re : {
+					required : "비밀번호확인은 필수입력사항 입니다.",
+					equirlto : "비밀번호 확인이 일치하지 않습니다."
+				},
+				email : {
+					required : "이메일은 필수입력사항 입니다.",
+					email : "이메일 형식에 맞지 않는 이메일주소 입니다."
+				},
+				weburl : {
+					url : "url형식에 맞지 않는 주소입니다."
+				},
+				topic : "최소 2가지 항목을 선택해 주세요.",
+				agree : "동의사항을 확인하시고 동의해 주세요."
+			}
+		});
+	});
+</script>
+</head>
+<body>
+	<h1 class="title">사용자 입력값 검증</h1>
+	<div class="exec">
+		<form action="join_ok.html" id="signupForm" method="post">
+			<p>
+				<label for="userid">아이디*</label> 
+				<input id="userid" name="userid" type="text">
+			</p>
+			<p>
+				<label for="pwd">비밀번호*</label> 
+				<input id="pwd" name="pwd" type="password">
+			</p>
+			<p>
+				<label for="pwd_re">비밀번호확인*</label> 
+				<input id="pwd_re" name="pwd_re" type="password">
+			</p>
+			<p>
+				<label for="username">이름*</label> 
+				<input id="username" name="username" type="text">
+			</p>
+			<p>
+				<label for="age">나이*</label> 
+				<input id="age" name="age" type="text">
+			</p>
+			<p>
+				<label for="email">이메일*</label> 
+				<input id="email" name="email" type="text">
+			</p>
+			<p>
+				<label for="weburl">홈페이지/블로그</label> 
+				<input id="weburl" name="weburl" type="text">
+			</p>
+			<p>
+				<label for="newsletter">뉴스레터 가입</label> 
+				<label>가입합니다.<input id="newsletter" name="newsletter" type="checkbox"></label>
+			</p>
+			<p>
+				<label for="newsletter">뉴스레터 관심분야</label> 
+				<label>신간도서안내<input id="reading" name="topic" type="checkbox"></label> 
+				<label>개봉예정영화<input id="movie" name="topic" type="checkbox"></label> 
+				<label>새로발매된음반<input id="music" name="topic" type="checkbox"></label>
+			</p>
+			<p>
+				<label for="agree">약관동의*</label> 
+				<label>동의합니다.<input id="agree" name="agree" type="checkbox"></label>
+			</p>
+			<p>
+				<input type="submit" value="가입">
+			</p>
+		</form>
+	</div>
+</body>
+</html>

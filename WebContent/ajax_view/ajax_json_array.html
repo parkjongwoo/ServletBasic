@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script id="itemTemplate" type="text/x-jquery-templ">
+<li>
+<a href="#">
+	<span class="text">
+		<span class="title">${title}</span>
+		<span class="desc">${teacher}</span>
+		<span class="info">등록일시 : ${time}</span>
+	</span>
+</a>
+</li>
+</script>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript"
+	src="https://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+	
+<script type="text/javascript">
+	$(function() {
+		$("#mybtn").click(function(){
+			$.ajax({
+				url: "../json/text2.json",
+				type: "get",
+				dataType: "json",
+				timeout: "30000",
+				cache: false,				
+				success: function(result){
+					var subjects = result.school.subject;
+					var div = $("#itemTemplate").tmpl(subjects);
+					$("#result").html(div);
+// 					for(var subject of subjects){
+// 						var title = subject.title;
+// 						var time = subject.time;
+// 						var teacher = subject.teacher;
+// 						var div = $("<div>");
+// 						var p1 = $("<p>").html(title);
+// 						var p2 = $("<p>").html(time);
+// 						var p3 = $("<p>").html(teacher);
+						
+// 						div.append(p1).append(p2).append(p3);
+// 			        	$("#result").append(div);
+						
+// 					}
+		        },
+		        error: function(xhr,status,error){
+		        	$("#result").html("실패");
+		        	console.log(print(xhr));
+		        }
+			});			
+		});
+	});
+	
+	function print(obj){
+		var result = "";
+		for(var o in obj){
+			result += "["+o+":"+obj[o]+"]\n";
+			
+// 			if(typeof obj[o] == 'object'){
+// 				result += "\r\n";
+// 				print(obj[o]);
+// 			}			
+		}
+		return result;
+	}
+</script>
+</head>
+<body>
+	<h1>$.ajax() 함수를 사용한 텍스트 읽기</h1>
+	<input type="button" value="txt파일 가져오기" id="mybtn"/>
+	<div id="result"></div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+	"school": {
+		"subject": [
+			{
+				"title": "자바",
+				"time": "매일 8 시간",
+				"teacher": "임미영"
+			},
+			{
+				"title": "자바",
+				"time": "매일 8 시간",
+				"teacher": "임미영"
+			},
+			{
+				"title": "자바",
+				"time": "매일 8 시간",
+				"teacher": "임미영"
+			}
+		]
+	}
+}

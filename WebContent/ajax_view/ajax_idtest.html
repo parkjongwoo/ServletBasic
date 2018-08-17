@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#mybtn").click(function(){
+			var input_val = $("input[name='memberid']").val();
+        	
+        	//유효성 검사
+        	
+        	//서블릿 url
+        	var url = "../idcheck_xml";	
+        	
+        	$.get(url,{
+        		"memberid" : input_val        		
+        	},function(data){
+        		var result_text =
+        			$(data).find("result").text();
+        		$("#console").html(result_text);
+        	});
+		});
+	});
+	
+	function print(obj){
+		var result = "";
+		for(var o in obj){
+			result += "["+o+":"+obj[o]+"]\n";
+			
+			if(typeof obj[o] == 'object'){
+				result += "\r\n";
+				print(obj[o]);
+			}			
+		}
+		return result;
+	}
+</script>
+</head>
+<body>
+	<h1>$.ajax() 함수를 사용한 텍스트 읽기</h1>
+	<form action="" method="get">
+		<input type="text" name="memberid">
+		<input type="button" value="id중복체크" id="mybtn" />		
+	</form>
+	<div id="console"></div>
+	아이디:<input type="text" name="loginid"><br>
+	비번:<input type="password" name="loginpw">
+	<input type="button" value="id중복체크" id="mybtn" />
+</body>
+</html>

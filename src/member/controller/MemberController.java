@@ -26,7 +26,7 @@ import mvc.validator.MemoValidator;
  * Servlet implementation class SigninController
  */
 @WebServlet(name = "memberController", urlPatterns = { "","/home","/memberList", "/memberForm", "/memberInput", 
-		"/memberDetail", "/memberDelete","/pwRecheck","/memberUpdate","/idcheck","/login","/loginForm","/logout"})
+		"/memberDetail", "/memberDelete","/pwRecheck","/memberUpdate","/idcheck","/login","/loginForm","/logout","/idcheck_xml"})
 public class MemberController extends HttpServlet implements Servlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -59,6 +59,14 @@ public class MemberController extends HttpServlet implements Servlet {
 			
 		}else if(action.equals("logout")) {
 			request.getSession().removeAttribute("member");
+		}else if(action.equals("idcheck_xml")){
+			String id = request.getParameter("memberid");
+			Member m = dao.selecteById(id);
+			if(m == null) {
+				request.setAttribute("result", "사용 가능한 ID 입니다.");
+			}else {
+				request.setAttribute("result", "사용 불가능한 ID 입니다.");				
+			}
 		}
 		
 		String requestURL = null;
@@ -90,6 +98,8 @@ public class MemberController extends HttpServlet implements Servlet {
 			requestURL = "/member_view/loginForm.jsp";
 		}else if(action.equals("logout")) {
 			requestURL = "/home";
+		}else if(action.equals("idcheck_xml")){
+			requestURL = "/member_view/idcheck_xml.jsp";
 		}
 		
 		System.out.println("requestURL: "+requestURL);
