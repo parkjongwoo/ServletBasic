@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#result").html(document.location.href);
+		$("#backBtn").click(function(){
+			window.history.back();
+		});
+	});
+</script>
+</head>
+<body>	
+	<h2>입력된 이름은</h2>
+	<div id="result"></div>
+	회원가입을 축하합니다.
+	<input type="button" id="backBtn" value="이전페이지"> 
+</body>
+</html>

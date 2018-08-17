@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Jquery mouse event</title>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#input").mousedown(function(){
+			$("#result").append("<span style='color:black;'>Mouse down event</span>");
+		});
+		$("#input").mouseup(function(){
+			$("#result").append("<span style='color:gray;'>Mouse up event</span>");
+		});
+		$("#input").mousemove(function(){
+			$("#result").append("<span style='color:blue;'>Mouse move event</span>");
+		});
+		$("#input").mouseenter(function(){
+			$("#result").append("<span style='color:red;'>Mouse enter event</span>");
+		});
+		$("#input").mouseleave(function(){
+			$("#result").append("<span style='color:green;'>Mouse mouseleave event</span>");
+		});
+		$("#input").click(function(){
+			$("#result").append("<span style='color:skyblue;'>Mouse mouseclick event</span>");
+		});
+		$("#input").dblclick(function(){
+			$("#result").append("<span style='color:violet;'>Mouse mousedblclick event</span>");
+		});
+	});
+</script>
+</head>
+<body>
+	<h1>마우스 이벤트 테스트</h1>
+	<div id="input">
+		do it here
+	</div>
+	<h2>결과</h2>
+	<div id="result"></div>
+</body>
+</html>

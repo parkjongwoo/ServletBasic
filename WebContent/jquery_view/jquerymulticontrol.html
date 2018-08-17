@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#all_check").change(function(){
+// 			alert($(this).prop("checked"));// checked,selected 등의 속성은 prop 함수로 처리.attr은 속성변경 힘듬
+			$(".hobby_check").prop("checked",$(this).prop("checked"));
+			alert($(this).attr("checked"));
+		});
+	});
+</script>
+</head>
+<body>
+	<h3>취미</h3>
+	<input type="checkbox" id="all_check" value="Y" checked="checked"/>
+	<label for="all_check">전체선택</label>
+	<label><input class="hobby_check" type="checkbox" name="hobby" value="축구" />축구</label>
+	<label><input class="hobby_check" type="checkbox" name="hobby" value="농구" />농구</label>
+	<label><input class="hobby_check" type="checkbox" name="hobby" value="야구" />야구</label>
+</body>
+</html>

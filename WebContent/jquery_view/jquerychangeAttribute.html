@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		var index=1;
+		$("img").click(function(){
+			index = (index%4)+1;
+			$(this).attr("src","../img/"+index+".jpg");
+		});
+	});
+</script>
+</head>
+<body>
+	<h3>속성제어</h3>
+	<p></p>
+	<img alt="튤립" src="../img/1.jpg">
+	<div id="result"></div>
+</body>
+</html>

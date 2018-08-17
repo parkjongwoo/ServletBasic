@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#singleButton").click(function(){
+			//$("#singleButton").html("감사합니다.")
+			$(this).html("감사합니다.")
+		});
+		$(".multiButton").click(function(){
+			var index = $(".multiButton").index(this);
+			var result = index + " 번째 요소를 눌렀습니다.";
+			$(this).html(result);
+		});
+	});
+</script>
+</head>
+<body>
+	<h3>단독</h3>
+	<div id="singleButton">클릭</div>
+	
+	<h3>다중</h3>
+	<div class="multiButton">클릭</div>
+	<div class="multiButton">클릭</div>
+	<div class="multiButton">클릭</div>
+	<div class="multiButton">클릭</div>
+	<div class="multiButton">클릭</div>
+	<div class="multiButton">클릭</div>
+
+	<h2>결과</h2>
+	<div id="result"></div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#input input[type=text]").focus(function() {
+			$("#result").append("<span style='color:red;'>focus in</span>");
+		});
+		$("#input input[type=text]").blur(function() {
+			$("#result").append("<span style='color:blue;'>focus out</span>");
+		});
+		$("#input input[type=text]").focus();
+	});
+</script>
+</head>
+<body>
+	<h1>마우스 이벤트 테스트</h1>
+	<div id="input">
+		<input type="text" value="do it here">
+		<input type="text" value="do it here">
+		<h2>결과</h2>
+		<div id="result"></div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#join").submit(function(){
+						
+			var user_id_input = $("input[name='user_id']");
+			var user_id = user_id_input.val();
+			if(!user_id){
+				alert("아이디를 입력하세요.");
+				user_id_input.focus();
+				return false;
+			}
+			
+			var user_pw_input = $("input[name='user_pw']");
+			var user_pw = user_pw_input.val();
+			if(!user_pw){
+				alert("비밀번호를 입력하세요.");
+				user_pw_input.focus();
+				return false;
+			}
+			
+			var juminno_input = $("input[name='juminno']");
+			var juminno = juminno_input.val();
+			if(!juminno){
+				alert("주민번호를 입력하세요.");
+				juminno_input.focus();
+				return false;
+			}
+			
+			var gender_input = $("input[name='gender']");
+			var gender = gender_input.val();
+			if(!gender_input.is(":checked")){
+				alert("성별을 입력하세요.");
+				gender_input.eq(0).focus();
+				return false;
+			}
+			
+			var email_input = $("input[name='user_email']");
+			var email = email_input.val();
+			if(!email){
+				alert("이메일을 입력하세요.");
+				email_input.focus();
+				return false;
+			}
+			
+			var url_input = $("input[name='user_url']");
+			var url = url_input.val();
+			if(!url){
+				alert("이메일을 입력하세요.");
+				url_input.focus();
+				return false;
+			}
+			
+			var pnum_input = $("input[name='user_pnum']");
+			var pnum = pnum_input.val();
+			if(!pnum){
+				alert("이메일을 입력하세요.");
+				pnum_input.focus();
+				return false;
+			}
+			
+			var hobby = $("input[name='hobby']:checked");
+// 			hobby.each(function(){
+// 				alert($(this).val());
+// 			});
+			
+			var job_input = $("select[name='job']");
+			var joboption = job_input.find("option:selected");
+			var jobValue = joboption.val();
+			if(joboption.index()<1){
+				alert("직업을 입력하세요.");
+				job_input.focus();
+				return false;
+			}
+			
+			result = 
+				"user_id:"+user_id + '\n' +
+				"user_pw:"+user_pw + '\n' +
+				"juminno:"+juminno + '\n' +
+				"gender:"+gender+ '\n' +
+				"email:"+email+ '\n' +
+				"url:"+url+ '\n' +
+				"pnum:"+pnum+ '\n' +
+				"hobby:"+getKeyVal(hobby)+ '\n' +
+				"job:"+jobValue;
+			
+			alert("결과는 \n"+result);
+			return false;
+		});
+	});
+	function getKeyVal(obj){
+		result = "";
+		obj.each(function(){
+			result += $(this).val();
+		});
+		return result;
+	}
+</script>
+</head>
+<body>
+	<form id="join" name="join" action="#">
+		<h1>회원가입</h1>
+		<div id="input">
+			<h4>아이디</h4><input type="text" name="user_id">
+			<h4>비밀번호</h4><input type="password" name="user_pw">
+			<h4>주민번호</h4><input type="text" name="juminno">
+			
+			<h3>성별</h3>
+			<label><input type="radio" name="gender" value="남자"/>남자</label>
+			<label><input type="radio" name="gender" value="여자"/>여자</label>
+		
+			<h4>이메일주소</h4><input type="email" name="user_email">
+			<h4>url</h4><input type="url" name="user_url">
+			<h4>핸드폰번호</h4><input type="text" name="user_pnum">
+			
+			<h4>취미</h4>
+			<label><input type="checkbox" name="hobby" value="축구"/>축구</label>
+			<label><input type="checkbox" name="hobby" value="농구"/>농구</label>
+			<label><input type="checkbox" name="hobby" value="야구"/>야구</label>
+			
+			<h4>직업</h4>
+			<select name="job">
+				<option>---- 선택하세요 ----</option>
+				<option value="프로그래머">프로그래머</option>
+				<option value="퍼블리셔">퍼블리셔</option>
+				<option value="디자이너">디자이너</option>
+				<option value="기획">기획</option>
+			</select>
+			<br><br>
+			<input type="submit" value="보내기">
+			<input type="reset" value="초기화">
+		</div>
+		
+	</form>
+	<h2>결과</h2>
+	<div id="result"></div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Jquery Selector</title>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#title").html("첫번째 제목");
+		$("div#container > h1#title").html("제목입니다.");
+		$("div#container > div.box").html("box입니다.");
+		$("div#container > ul:eq(0) > li").html("목록1");
+		$("div#container > ul:eq(1) > li").html("목록2");
+	});
+</script>
+</head>
+<body>
+	<div id="container">
+		<h1 id="title"></h1>
+		<div class="box"></div>
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+</body>
+</html>

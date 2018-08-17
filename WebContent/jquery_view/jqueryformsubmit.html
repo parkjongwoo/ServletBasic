@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("form[name='form1']").submit(function(){
+			return confirm("정말 저장하시겠습니까?");
+		});
+		$("input[type='reset']").click(function(){
+			return confirm("정말 입력을 취소하시겠습니까?");
+		});
+	});
+</script>
+</head>
+<body>
+	<form name="form1" action="jqueryformsubmittarget.html">
+		<h1>회원가입</h1>
+		<div id="input">
+			<h3>당신의 이름은 무엇입니까?</h3>
+			<input type="text" name="user_name" /> <input type="submit"
+				value="저장하기" /> <input type="reset" value="다시작성" />
+
+		</div>
+	</form>
+	<h2>결과</h2>
+	<div id="result"></div>
+</body>
+</html>
