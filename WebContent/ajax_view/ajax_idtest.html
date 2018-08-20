@@ -6,6 +6,7 @@
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
+// 	아이디 중복 확인 및 로그인 처리 
 	$(function() {
 		$("#mybtn").click(function(){
 			var input_val = $("input[name='memberid']").val();
@@ -17,6 +18,25 @@
         	
         	$.get(url,{
         		"memberid" : input_val        		
+        	},function(data){
+        		var result_text =
+        			$(data).find("result").text();
+        		$("#console").html(result_text);
+        	});
+		});
+		
+		$("#loginbtn").click(function(){
+			var login_id = $("input[name='loginid']").val();
+			var login_pw = $("input[name='loginpw']").val();
+        	
+        	//유효성 검사
+        	
+        	//서블릿 url
+        	var url = "../login_xml";	
+        	
+        	$.get(url,{
+        		"memberid" : login_id,       		
+        		"memberpw" : login_pw,       		
         	},function(data){
         		var result_text =
         			$(data).find("result").text();
@@ -48,6 +68,6 @@
 	<div id="console"></div>
 	아이디:<input type="text" name="loginid"><br>
 	비번:<input type="password" name="loginpw">
-	<input type="button" value="id중복체크" id="mybtn" />
+	<input type="button" value="로그인" id="loginbtn" />
 </body>
 </html>

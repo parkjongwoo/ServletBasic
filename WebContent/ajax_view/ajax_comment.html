@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+//댓글 처리
+	$(function() {
+		$.get("../comment_list", null, function(data) {
+			$(data).find("comment").each(function(idx,item){
+				addNewItem(
+						$(this).find("num").text(),
+						$(this).find("writer").text(),
+						$(this).find("content").text(),
+						$(this).find("datetime").text());
+			});
+
+		});
+
+		$("#mybtn").click(function() {
+			var writer = $("input[name='username']").val();
+			var content = $("textarea[name='comment']").val();
+			//유효성 검사
+			
+			//서블릿 url
+			var url = "../comment_insert";
+
+			$.post(url, {
+				"writer" : writer,
+				"content" : content
+			}, function(data) {
+				var success = $(data).find("result").text();
+				if(success=="true"){					
+					addNewItem(
+							$(data).find("num").text(),
+							$(data).find("writer").text(),
+							$(data).find("content").text(),
+							$(data).find("datetime").text());
+					
+				}
+				var msg = $(data).find("message").text();
+				alert(msg);
+			});
+		});
+		
+		$( "#comment_list").on( "click","li p input", function() {
+			var url = "../comment_delete";
+			$.post(url, {
+				"num" : $(this).parent().parent().attr("data-num")
+			}, function(data) {
+				console.log($(this));
+				var success = $(data).find("result").text();
+				var num = $(data).find("num").text();
+				if(success=="true"){					
+					$("#comment_list li[data-num="+num+"]").remove();					
+				}
+				var msg = $(data).find("message").text();
+				alert(msg);
+			});
+		});
+
+	});
+	
+	function addNewItem(num, writer, content, datetime) {
+		var new_li = $("<li>");
+		new_li.attr("data-num", num);
+
+		var writer_p = $("<p>");
+
+		var name_span = $("<span>");
+		name_span.html(writer + "님");
+
+		var date_span = $("<span>");
+		date_span.html("/" + datetime + " ");
+
+		var del_input = $("<input>");
+		del_input.attr({
+			"type" : "button",
+			"value" : "댓글삭제"
+		});
+
+		var content_p = $("<p>");
+		content_p.html(content);
+
+		writer_p.append(name_span).append(date_span).append(del_input);
+
+		new_li.append(writer_p).append(content_p);
+
+		$("#comment_list").prepend(new_li);
+	}
+
+	function print(obj) {
+		var result = "";
+		for ( var o in obj) {
+			result += "[" + o + ":" + obj[o] + "]\n";
+
+			if (typeof obj[o] == 'object') {
+				result += "\r\n";
+				print(obj[o]);
+			}
+		}
+		return result;
+	}
+</script>
+</head>
+<body>
+	<h1>$.ajax() 함수를 사용한 실시간 댓글 추가</h1>
+	<form id="comment_form">
+		작성자:<input type="text" name="username" id="username"> 내용:
+		<textarea cols="20" rows="20" name="comment" id="comment"></textarea>
+		<input type="button" value="댓글전송" id="mybtn" />
+	</form>
+	<ul id="comment_list">
+
+	</ul>
+</body>
+</html>
