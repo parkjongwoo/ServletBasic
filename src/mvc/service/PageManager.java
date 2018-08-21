@@ -12,7 +12,7 @@ public class PageManager {
 	 * 보여줄 페이지
 	 */
 	private int requestPage;
-	
+	private int totalRecord;
 	private String totalPageQuery;
 	
 	public PageManager() {}
@@ -27,8 +27,8 @@ public class PageManager {
 	
 	public int getManagedPageNum() {
 		PageDao dao = new PageDaoImpl();
-		int totalRecord = dao.getCount(this.totalPageQuery);
-		int totalPages = (int)Math.ceil((double)totalRecord / PageInfo.ROW_COUNT_PER_PAGE);
+		this.totalRecord = dao.getCount(this.totalPageQuery);
+		int totalPages = (int)Math.ceil((double)this.totalRecord  / PageInfo.ROW_COUNT_PER_PAGE);
 		
 		if(totalPages < requestPage)
 			return totalPages;
@@ -44,10 +44,10 @@ public class PageManager {
 //		result.setRowStartNumber(start);
 //		result.setRowEndNumber(start + PageInfo.ROW_COUNT_PER_PAGE-1);
 		PageDao dao = new PageDaoImpl();
-		int totalRow = dao.getCount(sql);;
+//		int totalRow = dao.getCount(sql);;
 		// 마지막부터 내림차순
 		PageRowResult result = new PageRowResult();
-		int start = totalRow - (requestPage-1)*PageInfo.ROW_COUNT_PER_PAGE;
+		int start = this.totalRecord  - (requestPage-1)*PageInfo.ROW_COUNT_PER_PAGE;
 		result.setRowStartNumber(start);
 		result.setRowEndNumber(start - PageInfo.ROW_COUNT_PER_PAGE+1);
 		return result;
@@ -62,8 +62,8 @@ public class PageManager {
 		int startPage = 0;
 		int endPage = 0;		
 		int groupNumber = (int)Math.ceil((double)requestPage / PageInfo.SHOW_PAGE_COUNT);		
-		int totalRecord = dao.getCount(this.totalPageQuery);
-		int totalPages = (int)Math.ceil((double)totalRecord / PageInfo.ROW_COUNT_PER_PAGE);
+//		int totalRecord = dao.getCount(this.totalPageQuery);
+		int totalPages = (int)Math.ceil((double)this.totalRecord  / PageInfo.ROW_COUNT_PER_PAGE);
 		
 		endPage = Math.min(groupNumber * PageInfo.SHOW_PAGE_COUNT,totalPages);
 		startPage = Math.max(endPage - PageInfo.SHOW_PAGE_COUNT+1,1);
