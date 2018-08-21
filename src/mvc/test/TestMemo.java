@@ -84,7 +84,7 @@ public class TestMemo {
 	
 	public static void selectByPageNo(MemoDaoImpl dao, PageManager pm) {		
 		List<Memo> list = dao.select(pm);
-		PageGroupResult pgr = pm.getPageGroupResult(SQL.MEMO_ALL_COUNT);
+		PageGroupResult pgr = pm.getPageGroupResult();
 		System.out.println("select "+pgr.getSelectPageNumber()+" page=========");
 		for(int i=0;i<list.size();i++) {
 			System.out.println(list.get(i).toString());

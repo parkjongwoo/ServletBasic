@@ -16,6 +16,7 @@ import mvc.form.MemoForm;
 import mvc.memoerror.MemoError;
 import mvc.model.Memo;
 import mvc.model.page.PageGroupResult;
+import mvc.model.page.PageRowResult;
 import mvc.service.PageManager;
 import mvc.sql.SQL;
 import mvc.validator.MemoValidator;
@@ -24,7 +25,7 @@ import util.Util;
 /**
  * Servlet implementation class MemoController
  */
-@WebServlet(name = "memoController", urlPatterns = {"/memo_list","/memo_list_page","/memo_input_v1","/memo_input_v2","/memo_save_v1",
+@WebServlet(name = "memoController", urlPatterns = {"/memo_list_page","/memo_list","/memo_input_v1","/memo_input_v2","/memo_save_v1",
 		"/memo_save_v2","/memo_update","/memo_delete","/memo_detail" })
 public class MemoController extends HttpServlet {
 	
@@ -130,13 +131,15 @@ public class MemoController extends HttpServlet {
 			
 		}else if(action.equals("memo_list_page")) {
 			String pageNoS = request.getParameter("pageNo");			
-			int pageNo = Util.isNumeric(pageNoS)?Integer.parseInt(pageNoS):1;			
+			int pageNo = Util.isInteger(pageNoS)?Integer.parseInt(pageNoS):1;			
 			PageManager pm = new PageManager(pageNo, SQL.MEMO_ALL_COUNT);
 			
-			PageGroupResult pageGroupResult = pm.getPageGroupResult(SQL.MEMO_ALL_COUNT);
+			PageGroupResult pageGroupResult = pm.getPageGroupResult();
+			PageRowResult pageRowResult = pm.getPageRowResult(SQL.MEMO_ALL_COUNT);
 			List<Memo> list = dao.select(pm);
 			request.setAttribute("memoList", list);
 			request.setAttribute("pageGroupResult", pageGroupResult);
+			request.setAttribute("pageRowResult", pageRowResult);
 		}
 		
 		String dispatcherUrl = null;

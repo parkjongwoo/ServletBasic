@@ -33,9 +33,9 @@ $(document).ready(function(){
 				<th>나이</th>
 				<th>수정</th>
 			</tr>
-			<c:forEach var="memo" items="${memoList}" varStatus="status">
+			<c:forEach var="memo" items="${memoList}" varStatus="status" begin="0">
 				<tr>
-					<td>${status.count}</td>
+					<td>${pageRowResult.rowStartNumber-status.index}</td>
 					<td>${memo.memoid}</td>
 					<td>${memo.name}</td>
 					<td>${memo.age}</td>

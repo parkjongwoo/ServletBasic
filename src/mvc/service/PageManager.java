@@ -13,18 +13,21 @@ public class PageManager {
 	 */
 	private int requestPage;
 	
+	private String totalPageQuery;
+	
 	public PageManager() {}
 	public PageManager(int requestPage) {
 		this.requestPage = requestPage;		
 	}
 	public PageManager(int requestPage, String sql) {
 		this(requestPage);
-		this.requestPage = getManagedPageNum(sql);	
+		this.totalPageQuery = sql;
+		this.requestPage = getManagedPageNum();	
 	}
 	
-	public int getManagedPageNum(String sql) {
+	public int getManagedPageNum() {
 		PageDao dao = new PageDaoImpl();
-		int totalRecord = dao.getCount(sql);
+		int totalRecord = dao.getCount(this.totalPageQuery);
 		int totalPages = (int)Math.ceil((double)totalRecord / PageInfo.ROW_COUNT_PER_PAGE);
 		
 		if(totalPages < requestPage)
@@ -34,23 +37,23 @@ public class PageManager {
 		return requestPage;
 	}
 	
-	public PageRowResult getPageRowResult() {
+	public PageRowResult getPageRowResult(String sql) {
 		// 1부터 오름차순
-		PageRowResult result = new PageRowResult();
-		int start = (requestPage-1)*PageInfo.ROW_COUNT_PER_PAGE+1;
-		result.setRowStartNumber(start);
-		result.setRowEndNumber(start + PageInfo.ROW_COUNT_PER_PAGE-1);
-		
-//		int totalRow = 500;
-//		// 마지막부터 내림차순
 //		PageRowResult result = new PageRowResult();
-//		int start = totalRow - (requestPage-1)*PageInfo.ROW_COUNT_PER_PAGE;
+//		int start = (requestPage-1)*PageInfo.ROW_COUNT_PER_PAGE+1;
 //		result.setRowStartNumber(start);
-//		result.setRowEndNumber(start - PageInfo.ROW_COUNT_PER_PAGE+1);
+//		result.setRowEndNumber(start + PageInfo.ROW_COUNT_PER_PAGE-1);
+		PageDao dao = new PageDaoImpl();
+		int totalRow = dao.getCount(sql);;
+		// 마지막부터 내림차순
+		PageRowResult result = new PageRowResult();
+		int start = totalRow - (requestPage-1)*PageInfo.ROW_COUNT_PER_PAGE;
+		result.setRowStartNumber(start);
+		result.setRowEndNumber(start - PageInfo.ROW_COUNT_PER_PAGE+1);
 		return result;
 	}
 	
-	public PageGroupResult getPageGroupResult(String sql) {
+	public PageGroupResult getPageGroupResult() {
 		//1페이지부터 오름차순
 //		int groupNumber2 = requestPage / PageInfo.SHOW_PAGE_COUNT + (requestPage%PageInfo.SHOW_PAGE_COUNT==0?0:1);
 //		System.out.println("groupNumber:"+groupNumber+" groupNumber2:"+groupNumber2);
@@ -59,7 +62,7 @@ public class PageManager {
 		int startPage = 0;
 		int endPage = 0;		
 		int groupNumber = (int)Math.ceil((double)requestPage / PageInfo.SHOW_PAGE_COUNT);		
-		int totalRecord = dao.getCount(sql);
+		int totalRecord = dao.getCount(this.totalPageQuery);
 		int totalPages = (int)Math.ceil((double)totalRecord / PageInfo.ROW_COUNT_PER_PAGE);
 		
 		endPage = Math.min(groupNumber * PageInfo.SHOW_PAGE_COUNT,totalPages);

@@ -8,6 +8,7 @@ public class Util {
 	 * @return
 	 */
 	public static boolean isInteger(String strInt) {
+		if(strInt == null) return false;
 	    return strInt.matches("^[0-9]*$");
 	}
 	
@@ -17,6 +18,7 @@ public class Util {
 	 * @return
 	 */
 	public static boolean isNumeric(String strNum) {
+		if(strNum == null) return false;
 	    return strNum.matches("-?\\d+(\\.\\d+)?");
 	}
 	/**

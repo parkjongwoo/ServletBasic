@@ -22,13 +22,15 @@ public class MemoDaoImpl extends BaseDao implements MemoDao  {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		PageRowResult pr = pm.getPageRowResult();
+		PageRowResult pr = pm.getPageRowResult(SQL.MEMO_ALL_COUNT);
 		
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(SQL.MEMO_SELECT_BY_COUNT);
-			ps.setInt(1, pr.getRowStartNumber());
-			ps.setInt(2, pr.getRowEndNumber());
+			ps.setInt(1, pr.getRowEndNumber());
+			ps.setInt(2, pr.getRowStartNumber());
+			System.out.println("pr.getRowStartNumber():"+pr.getRowStartNumber());
+			System.out.println("pr.getRowEndNumber():"+pr.getRowEndNumber());
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				Memo memo = new Memo();
